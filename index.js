@@ -33,6 +33,10 @@ module.exports = Model => {
       return this.constructor.hashIdInstance.encode(this.$id())
     }
 
+    get hashid() {
+      return this.hashId
+    }
+
     $formatJson (obj) {
       obj = super.$formatJson(obj)
 
