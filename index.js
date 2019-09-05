@@ -7,7 +7,7 @@ const memoizeHashId = memoize(
 )
 
 // you can override any of the hashid properties (minus the salt) by passing thru opt
-module.exports = opts => {
+module.exports = (opts = {}) => {
   return Model => {
     // you can also override the hashid properties on a per-model basis using model properties
     return class extends Model {

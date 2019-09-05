@@ -11,11 +11,13 @@ const knex = knexjs({
 
 Model.knex(knex)
 
-class BaseModel extends visibility(Model) {
+class BaseModel extends plugin()(visibility(Model)) {
   static get tableName () {
     return 'users'
   }
+}
 
+class HiddenId extends BaseModel {
   static get hidden () {
     return ['id']
   }
@@ -25,9 +27,31 @@ describe('objection-hashid', () => {
   beforeAll(async () => {
     return knex.schema.createTable('users', table => {
       table.increments()
-      table.text('username')
-      table.text('email')
-      table.text('role')
     })
+  })
+
+  let obj
+
+  test('fills out hashid', async () => {
+    const model = await BaseModel.query().insert({})
+
+    expect(typeof model.id).toBe('number')
+    expect(typeof model.hashId).toBe('string')
+    expect(model.hashId.length).toBeGreaterThan(0) // hashid returns blank string on error
+  })
+
+  test('works with objection-visibility', async () => {
+    const model = await HiddenId.query().insert({})
+    obj = model.toJSON()
+
+    expect(obj.id).toBeUndefined()
+    expect(typeof obj.hashId).toBe('string')
+    expect(obj.hashId.length).toBeGreaterThan(0)
+  })
+
+  test('search by hashId', async () => {
+    const model = await HiddenId.query().findByHashId(obj.hashId)
+
+    expect(typeof model.id).toBe('number')
   })
 })
