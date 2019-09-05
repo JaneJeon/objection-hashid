@@ -1,6 +1,6 @@
 {
   "name": "objection-hashid",
-  "version": "0.2.2",
+  "version": "0.2.3",
   "description": "Objection plugin to automatically obfuscate model ids using hashids!",
   "main": "index.js",
   "repository": "JaneJeon/objection-hashid",
@@ -9,7 +9,7 @@
   "scripts": {
     "test": "jest",
     "test:watch": "yarn test --watch",
-    "coverage": "if is-ci; then cat ./coverage/lcov.info | coveralls; fi",
+    "coverage": "is-ci && codecov",
     "lint": "standard | snazzy",
     "lint:fix": "standard --fix | snazzy"
   },
@@ -31,7 +31,7 @@
   },
   "devDependencies": {
     "@types/jest": "^24.0.18",
-    "coveralls": "^3.0.6",
+    "codecov": "^3.5.0",
     "eslint-plugin-markdown": "^1.0.0",
     "husky": "^3.0.5",
     "is-ci": "^2.0.0",
