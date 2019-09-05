@@ -33,7 +33,7 @@ module.exports = Model => {
       return this.constructor.hashIdInstance.encode(this.$id())
     }
 
-    get hashid() {
+    get hashid () {
       return this.hashId
     }
 
