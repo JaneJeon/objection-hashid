@@ -10,10 +10,11 @@
     "test": "jest",
     "test:watch": "yarn test --watch",
     "coverage": "if is-ci; then cat ./coverage/lcov.info | coveralls; fi",
-    "lint": "standard"
+    "lint": "standard | snazzy",
+    "lint:fix": "standard --fix | snazzy"
   },
   "husky": {
-    "pre-commit": "standard --fix",
+    "pre-commit": "yarn lint:fix",
     "pre-push": "yarn test"
   },
   "dependencies": {
@@ -29,6 +30,7 @@
     "jest-junit": "^8.0.0",
     "knex": "^0.19.3",
     "objection": "^1.6.9",
+    "snazzy": "^8.0.0",
     "sqlite3": "^4.1.0",
     "standard": "^14.1.0"
   },
