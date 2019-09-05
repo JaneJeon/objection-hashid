@@ -6,25 +6,18 @@ const memoizeHashId = memoize(
     new HashId(salt, minLength, alphabet, seps)
 )
 
-// you can override any of the hashid properties (minus the salt) by passing thru opt
 module.exports = Model => {
-  // you can also override the hashid properties on a per-model basis using model properties
+  // you can override the hashid properties on a per-model basis using model properties
   return class extends Model {
     static get hashIdSalt () {
       return this.name
     }
 
-    static get hashIdMinLength () {
-      return opts.minLength
-    }
+    static get hashIdMinLength () {}
 
-    static get hashIdAlphabet () {
-      return opts.alphabet
-    }
+    static get hashIdAlphabet () {}
 
-    static get hashIdSeps () {
-      return opts.seps
-    }
+    static get hashIdSeps () {}
 
     // you can even override the hashId instance!
     static get hashIdInstance () {
