@@ -11,7 +11,7 @@ const knex = knexjs({
 
 Model.knex(knex)
 
-class BaseModel extends plugin()(visibility(Model)) {
+class BaseModel extends plugin(visibility(Model)) {
   static get tableName () {
     return 'users'
   }
