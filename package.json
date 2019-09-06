@@ -1,6 +1,6 @@
 {
   "name": "objection-hashid",
-  "version": "0.2.4",
+  "version": "0.2.5",
   "description": "Objection plugin to automatically obfuscate model ids using hashids!",
   "main": "index.js",
   "repository": "JaneJeon/objection-hashid",
@@ -13,8 +13,10 @@
     "lint": "standard | snazzy && prettier --check '**/*.{md,json,yml,yaml}'"
   },
   "husky": {
-    "pre-commit": "lint-staged",
-    "pre-push": "yarn test"
+    "hooks": {
+      "pre-commit": "lint-staged",
+      "pre-push": "yarn test"
+    }
   },
   "lint-staged": {
     "*.js": [
