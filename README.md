@@ -28,7 +28,7 @@ yarn test
 
 👤 **Jane Jeon**
 
-* Github: [@JaneJeon](https://github.com/JaneJeon)
+- Github: [@JaneJeon](https://github.com/JaneJeon)
 
 ## 🤝 Contributing
 

@@ -32,12 +32,18 @@ describe('objection-hashid', () => {
 
   let obj
 
-  test('fills out hashid', async () => {
+  test('fills out hashId', async () => {
     const model = await BaseModel.query().insert({})
 
     expect(typeof model.id).toBe('number')
     expect(typeof model.hashId).toBe('string')
     expect(model.hashId.length).toBeGreaterThan(0) // hashid returns blank string on error
+  })
+
+  test('aliases hashid', async () => {
+    const model = await BaseModel.query().first()
+
+    expect(model.hashid).toBeDefined()
   })
 
   test('works with objection-visibility', async () => {
@@ -53,5 +59,9 @@ describe('objection-hashid', () => {
     const model = await HiddenId.query().findByHashId(obj.hashId)
 
     expect(typeof model.id).toBe('number')
+  })
+
+  test.skip('works with compound primary keys', () => {
+    // TODO:
   })
 })
