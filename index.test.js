@@ -21,6 +21,10 @@ class HiddenId extends BaseModel {
   static get hidden () {
     return ['id']
   }
+
+  static get hashIdField () {
+    return false
+  }
 }
 
 describe('objection-hashid', () => {
@@ -29,8 +33,6 @@ describe('objection-hashid', () => {
       table.increments()
     })
   })
-
-  let obj
 
   test('fills out hashId', async () => {
     const model = await BaseModel.query().insert({})
@@ -46,19 +48,27 @@ describe('objection-hashid', () => {
     expect(model.hashid).toBeDefined()
   })
 
+  test('writes hashid to resulting object', async () => {
+    const model = await BaseModel.query().first()
+
+    expect(typeof model.toJSON().id).toBe('string')
+  })
+
+  let obj, hashId
+
   test('works with objection-visibility', async () => {
     const model = await HiddenId.query().insert({})
     obj = model.toJSON()
+    hashId = model.hashId
 
     expect(obj.id).toBeUndefined()
-    expect(typeof obj.hashId).toBe('string')
-    expect(obj.hashId.length).toBeGreaterThan(0)
+    expect(typeof obj.hashId).toBe('undefined')
   })
 
   test('search by hashId', async () => {
-    const model = await HiddenId.query().findByHashId(obj.hashId)
+    const model = await HiddenId.query().findByHashId(hashId)
 
-    expect(typeof model.id).toBe('number')
+    expect(model).toBeTruthy()
   })
 
   test.skip('works with compound primary keys', () => {

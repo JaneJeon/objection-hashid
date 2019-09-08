@@ -37,11 +37,18 @@ module.exports = Model => {
       return this.hashId
     }
 
+    // set to a falsey value to hide hashId.
+    // Otherwise, defaults to overwriting id in the resulting object
+    static get hashIdField () {
+      return 'id'
+    }
+
     $formatJson (obj) {
       obj = super.$formatJson(obj)
 
-      // if the id is blurred out, then the hashId doesn't matter anyway
-      obj.hashId = this.hashId
+      // insert the hashid into the resulting JSON
+      const field = this.constructor.hashIdField
+      if (field) obj[field] = this.hashId
 
       return obj
     }
