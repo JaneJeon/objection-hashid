@@ -43,6 +43,34 @@ Note that the hashed form of your model id is readable while it's an object (i.e
 
 When serialized, the `hashId` property won't be written so that your resulting object stays clean. Instead, the `hashId` gets written into the `id` field, overwriting it (this is configurable; see the _Configuration_ section).
 
+Now when you receive an object that has an encoded hashid, you can "decode" it and find the model using the `findByHashId` query:
+
+```js
+console.log(obj.id); // "XYZ"
+
+const post = await Post.query().findByHashId(obj.id);
+console.log(post.id); // 42
+console.log(post.hashId); // "XYZ"
+```
+
+Additionally, this plugin automatically detects and adjusts for composite primary keys, so you don't have to do anything; the hashid will show up the same:
+
+```js
+class SomeModel extends hashid(Model) {
+  static get idColumn() {
+    return ["id1", "id2"];
+  }
+}
+
+const model = await SomeModel.query().findById([1, 2]);
+console.log(model.$id()); // [1, 2]
+console.log(model.hashId); // "XYZ"
+console.log(JSON.stringify(model)); // {id1: 1, id2: 2, id: "XYZ"}
+
+const obj = await SomeModel.query().findByHashId(model.hashId);
+assert(obj.$id() == model.$id());
+```
+
 You can even use this plugin with `objection-visibility`:
 
 ```js
