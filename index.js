@@ -19,8 +19,7 @@ module.exports = Model => {
 
     static get hashIdSeps () {}
 
-    // you can even override the hashId instance!
-    static get hashIdInstance () {
+    static get _hashIdInstance () {
       return memoizeHashId(
         this.hashIdSalt,
         this.hashIdMinLength,
@@ -30,7 +29,7 @@ module.exports = Model => {
     }
 
     get hashId () {
-      return this.constructor.hashIdInstance.encode(this.$id())
+      return this.constructor._hashIdInstance.encode(this.$id())
     }
 
     get hashid () {
@@ -56,7 +55,7 @@ module.exports = Model => {
     static get QueryBuilder () {
       return class extends Model.QueryBuilder {
         findByHashId (hashId) {
-          const id = this.modelClass().hashIdInstance.decode(hashId)
+          const id = this.modelClass()._hashIdInstance.decode(hashId)
           const compoundPK = Array.isArray(this.modelClass().idColumn)
 
           return this.findById(compoundPK ? id : id[0])
