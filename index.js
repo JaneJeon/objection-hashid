@@ -10,7 +10,7 @@ module.exports = Model => {
   // you can override the hashid properties on a per-model basis using model properties
   return class extends Model {
     static get hashIdSalt () {
-      return this.name
+      return super.hashIdSalt || this.name
     }
 
     static get hashIdMinLength () {}
@@ -54,7 +54,9 @@ module.exports = Model => {
 
       // inject the hashed PK into the resulting JSON - a reminder
       // that hashId/hashid fields are virtual and do not get written to JSON.
-      if (this.constructor.hashIdField) { obj[this.constructor.hashIdField] = this.hashId }
+      if (this.constructor.hashIdField) {
+        obj[this.constructor.hashIdField] = this.hashId
+      }
 
       // hash the rest of the fields
       this.constructor.hashedFields.forEach(field => {
