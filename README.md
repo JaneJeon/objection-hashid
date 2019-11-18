@@ -1,6 +1,17 @@
 <h1 align="center">Welcome to objection-hashid 👋</h1>
 
-[![CircleCI](https://img.shields.io/circleci/build/github/JaneJeon/objection-hashid)](https://circleci.com/gh/JaneJeon/objection-hashid) [![codecov](https://codecov.io/gh/JaneJeon/objection-hashid/branch/master/graph/badge.svg)](https://codecov.io/gh/JaneJeon/objection-hashid) [![Maintainability](https://api.codeclimate.com/v1/badges/744d3e3b2ab971a81016/maintainability)](https://codeclimate.com/github/JaneJeon/objection-hashid/maintainability) [![Version](https://img.shields.io/npm/v/objection-hashid)](https://www.npmjs.com/package/objection-hashid) [![Downloads](https://img.shields.io/npm/dt/objection-hashid)](https://www.npmjs.com/package/objection-hashid) [![install size](https://packagephobia.now.sh/badge?p=objection-hashid)](https://packagephobia.now.sh/result?p=objection-hashid) [![Dependencies](https://img.shields.io/david/JaneJeon/objection-hashid)](https://david-dm.org/JaneJeon/objection-hashid) [![Known Vulnerabilities](https://snyk.io//test/github/JaneJeon/objection-hashid/badge.svg?targetFile=package.json)](https://snyk.io//test/github/JaneJeon/objection-hashid?targetFile=package.json) [![Dependabot Status](https://api.dependabot.com/badges/status?host=github&repo=JaneJeon/objection-hashid)](https://dependabot.com) [![License](https://img.shields.io/npm/l/objection-hashid)](https://github.com/JaneJeon/objection-hashid/blob/master/LICENSE) [![Docs](https://img.shields.io/badge/docs-github-blue)](https://janejeon.github.io/objection-hashid) [![JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://standardjs.com)
+[![CircleCI](https://img.shields.io/circleci/build/github/JaneJeon/objection-hashid)](https://circleci.com/gh/JaneJeon/objection-hashid)
+[![codecov](https://codecov.io/gh/JaneJeon/objection-hashid/branch/master/graph/badge.svg)](https://codecov.io/gh/JaneJeon/objection-hashid)
+[![Maintainability](https://api.codeclimate.com/v1/badges/744d3e3b2ab971a81016/maintainability)](https://codeclimate.com/github/JaneJeon/objection-hashid/maintainability)
+[![Version](https://img.shields.io/npm/v/objection-hashid)](https://www.npmjs.com/package/objection-hashid)
+[![Downloads](https://img.shields.io/npm/dt/objection-hashid)](https://www.npmjs.com/package/objection-hashid)
+[![install size](https://packagephobia.now.sh/badge?p=objection-hashid)](https://packagephobia.now.sh/result?p=objection-hashid)
+[![Dependencies](https://img.shields.io/david/JaneJeon/objection-hashid)](https://david-dm.org/JaneJeon/objection-hashid)
+[![Vulnerabilities](https://snyk.io//test/github/JaneJeon/objection-hashid/badge.svg?targetFile=package.json)](https://snyk.io//test/github/JaneJeon/objection-hashid?targetFile=package.json)
+[![Dependabot](https://api.dependabot.com/badges/status?host=github&repo=JaneJeon/objection-hashid)](https://dependabot.com)
+[![License](https://img.shields.io/npm/l/objection-hashid)](https://github.com/JaneJeon/objection-hashid/blob/master/LICENSE)
+[![Docs](https://img.shields.io/badge/docs-github-blue)](https://janejeon.github.io/objection-hashid)
+[![Standard](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://standardjs.com)
 
 > Objection plugin to automatically obfuscate model ids using hashids!
 
@@ -11,6 +22,8 @@
 Sometimes you don't want to expose the id's of your model directly. Instead of `{id: 1}`, you can have `{id: 'W02nmXZ'}` like YouTube's video id or bitly's link id.
 
 That's where [hashids](https://hashids.org) and this plugin comes in: it automatically converts the model id(s) (yes, it supports compound PKs) into an obfuscated form for the outside world to read, and then convert it back to the original form when the server's trying to read the model id.
+
+And all of this operation is entirely symmetric, so you don't have to worry about the integrity of the id as you convert back and forth between your auto-generated id and the hashed version!
 
 ## Install
 
@@ -90,6 +103,18 @@ Specifically, applying the visibility plugin after this plugin might strip away 
 
 Note that this plugin directly uses Objection hooks to provide its functionality, so you don't have to do change your code if you're already using `virtualAttributes`.
 
+And finally, you can hash non-id fields as well (especially useful for hashing foreign key references). For example, if you have a `Post` model that has a `creatorId` that points to a `User`'s `id`, you can hash the `creatorId` field as well as the `id` field.
+
+In fact, you can hash any arbitrary non-id field in the model as follows:
+
+```js
+class Post extends hashid(Model) {
+  static get hashedFields() {
+    return ["creatorId"]; // specify any non-PK fields
+  }
+}
+```
+
 ## Configuration
 
 You might've noticed that when initializing this plugin, it doesn't take in any options object. Instead, all of the configuration is done through specifying model properties, meaning you can configure this plugin on a per-model basis!
@@ -110,7 +135,7 @@ So the `hashid` parameters can be overwritten by static `hashIdSalt`, `hashIdMin
 
 Furthermore, the `hashIdSalt` property defaults to the model's class name, i.e. your generated hashid's won't "collide" between two different models!
 
-And finally, to configure which field the hashid is written to during serialization, set the static `hashIdField` property.  
+To configure which field the hashid is written to during serialization, set the static `hashIdField` property.  
 By default, it's `id`, but you can change it to any string (e.g. `hashid`), or, you can set it to a falsey value to _disable_ writing the hashid to the final object, meaning you can only access the hashid before it's serialized.
 
 ## Run tests
@@ -128,7 +153,7 @@ yarn test
 ## 🤝 Contributing
 
 Contributions, issues and feature requests are welcome!  
-Feel free to check [issues page](https://github.com/JaneJeon/objection-hashid/issues).
+Feel free to check the [issues page](https://github.com/JaneJeon/objection-hashid/issues).
 
 ## Show your support
 

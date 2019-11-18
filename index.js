@@ -10,7 +10,7 @@ module.exports = Model => {
   // you can override the hashid properties on a per-model basis using model properties
   return class extends Model {
     static get hashIdSalt () {
-      return this.name
+      return super.hashIdSalt || this.name
     }
 
     static get hashIdMinLength () {}
@@ -36,18 +36,32 @@ module.exports = Model => {
       return this.hashId
     }
 
-    // set to a falsey value to hide hashId.
-    // Otherwise, defaults to overwriting id in the resulting object
+    // This field indicates what property the hashid is written under.
+    // By default, it overwrites id, but if you're using Algolia, for example,
+    // it may be useful to set a custom id field as "ObjectID".
     static get hashIdField () {
       return 'id'
+    }
+
+    // These are all of the **non-id** fields that are hashed.
+    // Useful if you have FK references that points to an id that is hashed.
+    static get hashedFields () {
+      return []
     }
 
     $formatJson (obj) {
       obj = super.$formatJson(obj)
 
-      // insert the hashid into the resulting JSON
-      const field = this.constructor.hashIdField
-      if (field) obj[field] = this.hashId
+      // inject the hashed PK into the resulting JSON - a reminder
+      // that hashId/hashid fields are virtual and do not get written to JSON.
+      if (this.constructor.hashIdField) {
+        obj[this.constructor.hashIdField] = this.hashId
+      }
+
+      // hash the rest of the fields
+      this.constructor.hashedFields.forEach(field => {
+        obj[field] = this.constructor._hashIdInstance.encode(obj[field])
+      })
 
       return obj
     }

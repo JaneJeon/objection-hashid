@@ -13,7 +13,7 @@ Model.knex(knex)
 
 class BaseModel extends plugin(visibility(Model)) {
   static get tableName () {
-    return 'users'
+    return 'table1'
   }
 }
 
@@ -27,10 +27,39 @@ class HiddenId extends BaseModel {
   }
 }
 
+class AlgoliaObject extends BaseModel {
+  static get hashIdField () {
+    return 'ObjectID'
+  }
+}
+
+class FatModel extends BaseModel {
+  static get hashedFields () {
+    return ['foo', 'bar']
+  }
+}
+
+class CompoundPK extends BaseModel {
+  static get tableName () {
+    return 'table2'
+  }
+
+  static get idColumn () {
+    return ['x', 'y']
+  }
+}
+
 describe('objection-hashid', () => {
   beforeAll(async () => {
-    return knex.schema.createTable('users', table => {
+    await knex.schema.createTable(BaseModel.tableName, table => {
       table.increments()
+      table.integer('foo')
+    })
+
+    await knex.schema.createTable(CompoundPK.tableName, table => {
+      table.integer('x').notNullable()
+      table.integer('y').notNullable()
+      table.primary(['x', 'y'])
     })
   })
 
@@ -51,13 +80,25 @@ describe('objection-hashid', () => {
   test('writes hashid to resulting object', async () => {
     const model = await BaseModel.query().first()
 
-    expect(typeof model.toJSON().id).toBe('string')
+    expect(typeof model.toJSON().id).toEqual('string')
+  })
+
+  test('can change what field the hashed PK is written under', async () => {
+    const model = await AlgoliaObject.query().first()
+
+    expect(typeof model.toJSON().ObjectID).toBe('string')
+  })
+
+  test('can hash other fields as well', async () => {
+    const model = await FatModel.query().insertAndFetch({ foo: 4 })
+
+    expect(typeof model.toJSON().foo).toBe('string')
   })
 
   let obj, hashId
 
   test('works with objection-visibility', async () => {
-    const model = await HiddenId.query().insert({})
+    const model = await HiddenId.query().insertAndFetch({})
     obj = model.toJSON()
     hashId = model.hashId
 
@@ -71,7 +112,12 @@ describe('objection-hashid', () => {
     expect(model).toBeTruthy()
   })
 
-  test.skip('works with compound primary keys', () => {
-    // TODO:
+  test('works with compound primary keys', async () => {
+    const model = await CompoundPK.query().insertAndFetch({ x: 6, y: 9 })
+    const hashId = model.toJSON().id
+    expect(typeof hashId).toBe('string')
+
+    const instance = await CompoundPK.query().findByHashId(hashId)
+    expect(instance.$id()).toEqual([6, 9])
   })
 })
