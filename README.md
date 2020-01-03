@@ -2,7 +2,6 @@
 
 [![CircleCI](https://img.shields.io/circleci/build/github/JaneJeon/objection-hashid)](https://circleci.com/gh/JaneJeon/objection-hashid)
 [![codecov](https://codecov.io/gh/JaneJeon/objection-hashid/branch/master/graph/badge.svg)](https://codecov.io/gh/JaneJeon/objection-hashid)
-[![Maintainability](https://api.codeclimate.com/v1/badges/744d3e3b2ab971a81016/maintainability)](https://codeclimate.com/github/JaneJeon/objection-hashid/maintainability)
 [![Version](https://img.shields.io/npm/v/objection-hashid)](https://www.npmjs.com/package/objection-hashid)
 [![Downloads](https://img.shields.io/npm/dt/objection-hashid)](https://www.npmjs.com/package/objection-hashid)
 [![install size](https://packagephobia.now.sh/badge?p=objection-hashid)](https://packagephobia.now.sh/result?p=objection-hashid)
