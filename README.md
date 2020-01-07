@@ -1,6 +1,7 @@
 <h1 align="center">Welcome to objection-hashid 👋</h1>
 
 [![CircleCI](https://img.shields.io/circleci/build/github/JaneJeon/objection-hashid)](https://circleci.com/gh/JaneJeon/objection-hashid)
+[![GitHub Actions](https://github.com/JaneJeon/objection-hashid/actions)](https://github.com/JaneJeon/objection-hashid/workflows/Build/badge.svg)
 [![codecov](https://codecov.io/gh/JaneJeon/objection-hashid/branch/master/graph/badge.svg)](https://codecov.io/gh/JaneJeon/objection-hashid)
 [![Version](https://img.shields.io/npm/v/objection-hashid)](https://www.npmjs.com/package/objection-hashid)
 [![Downloads](https://img.shields.io/npm/dt/objection-hashid)](https://www.npmjs.com/package/objection-hashid)
@@ -22,7 +23,7 @@ Sometimes you don't want to expose the id's of your model directly. Instead of `
 
 That's where [hashids](https://hashids.org) and this plugin comes in: it automatically converts the model id(s) (yes, it supports compound PKs) into an obfuscated form for the outside world to read, and then convert it back to the original form when the server's trying to read the model id.
 
-And all of this operation is entirely symmetric, so you don't have to worry about the integrity of the id as you convert back and forth between your auto-generated id and the hashed version!
+And all of this operation is _entirely_ symmetric, so you don't have to worry about the integrity of the ids and id references as you convert back and forth between your auto-generated id and the hashed version!
 
 ## Install
 
@@ -30,6 +31,8 @@ And all of this operation is entirely symmetric, so you don't have to worry abou
 yarn add objection-hashid # or
 npm install objection-hashid --save
 ```
+
+**NOTE**: this plugin works with and is tested against _both_ objection v1 and v2!
 
 ## Usage
 
