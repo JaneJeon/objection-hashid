@@ -1,6 +1,5 @@
 <h1 align="center">Welcome to objection-hashid 👋</h1>
 
-[![CircleCI](https://img.shields.io/circleci/build/github/JaneJeon/objection-hashid)](https://circleci.com/gh/JaneJeon/objection-hashid)
 [![GitHub Actions](https://github.com/JaneJeon/objection-hashid/actions)](https://github.com/JaneJeon/objection-hashid/workflows/Build/badge.svg)
 [![codecov](https://codecov.io/gh/JaneJeon/objection-hashid/branch/master/graph/badge.svg)](https://codecov.io/gh/JaneJeon/objection-hashid)
 [![Version](https://img.shields.io/npm/v/objection-hashid)](https://www.npmjs.com/package/objection-hashid)
