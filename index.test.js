@@ -50,6 +50,41 @@ const knex = knexjs({
     }
   }
 
+  class SubModel extends BaseModel {
+    static get hashIdSalt () {
+      return 'static'
+    }
+
+    static get hashIdMinLength () {
+      return 6
+    }
+  }
+
+  class ModelA extends SubModel {
+    static get relationMappings () {
+      return {
+        modelBs: {
+          relation: BaseModel.HasManyRelation,
+          modelClass: ModelB,
+          join: {
+            from: `${this.tableName}.id`,
+            to: `${ModelB.tableName}.fk_id`
+          }
+        }
+      }
+    }
+  }
+
+  class ModelB extends SubModel {
+    static get tableName () {
+      return `table3-${version}`
+    }
+
+    static get hashedFields () {
+      return ['fk_id']
+    }
+  }
+
   describe(`objection-hashid (w/ objection v${version})`, () => {
     beforeAll(async () => {
       await knex.schema.createTable(BaseModel.tableName, table => {
@@ -61,6 +96,14 @@ const knex = knexjs({
         table.integer('x').notNullable()
         table.integer('y').notNullable()
         table.primary(['x', 'y'])
+      })
+
+      await knex.schema.createTable(ModelB.tableName, table => {
+        table.increments()
+        table
+          .integer('fk_id')
+          .references(`${ModelA.tableName}.id`)
+          .notNullable()
       })
     })
 
@@ -120,6 +163,13 @@ const knex = knexjs({
 
       const instance = await CompoundPK.query().findByHashId(hashId)
       expect(instance.$id()).toEqual([6, 9])
+    })
+
+    test('maintains reference across multiple models', async () => {
+      const modelA = await ModelA.query().insertAndFetch({})
+      const modelB = await modelA.$relatedQuery('modelBs').insert({})
+
+      expect(modelA.toJSON().id).toEqual(modelB.toJSON().fk_id)
     })
   })
 })
