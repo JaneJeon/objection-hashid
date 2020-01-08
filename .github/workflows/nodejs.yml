@@ -48,4 +48,4 @@ jobs:
         uses: codecov/codecov-action@v1
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
-        if: matrix.node-version == '12.X' && github.ref == 'refs/heads/master'
+        if: matrix.node-version == '12' && github.ref == 'refs/heads/master'
