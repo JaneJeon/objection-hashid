@@ -139,6 +139,14 @@ Furthermore, the `hashIdSalt` property defaults to the model's class name, i.e. 
 To configure which field the hashid is written to during serialization, set the static `hashIdField` property.  
 By default, it's `id`, but you can change it to any string (e.g. `hashid`), or, you can set it to a falsey value to _disable_ writing the hashid to the final object, meaning you can only access the hashid before it's serialized.
 
+### Configuring for Foreign Key Relations
+
+Note that if you have any models that point to each other, _every_ bit of configuration that deals with the generation of hashids MUST be the same.
+
+This usually just means passing the same `hashIdSalt` to both models (if you haven't configured any other fields differently) since `hashIdSalt` varies based on the model's name.
+
+If you have a lot of models pointing to each other, though, I recommend that you have a BaseClass with the appropriate hashId configuration and just subclass all your models off of it, not touching any of the hashId configurations at the individual model level.
+
 ## Run tests
 
 ```sh
