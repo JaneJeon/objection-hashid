@@ -21,12 +21,10 @@
   "lint-staged": {
     "*.js": [
       "prettier --write",
-      "standard --fix",
-      "git add"
+      "standard --fix"
     ],
     "*.{md,json,yml,yaml}": [
-      "prettier --write",
-      "git add"
+      "prettier --write"
     ]
   },
   "standard": {
@@ -39,12 +37,12 @@
     "lodash.memoize": "^4.1.2"
   },
   "devDependencies": {
-    "@types/jest": "^24.0.18",
-    "husky": "^4.0.7",
-    "jest": "^24.9.0",
+    "@types/jest": "^24.9.1",
+    "husky": "^4.2.1",
+    "jest": "^25.1.0",
     "jest-junit": "^10.0.0",
     "knex": "^0.20.0",
-    "lint-staged": "^10.0.0",
+    "lint-staged": "^10.0.2",
     "objection-1": "npm:objection@1",
     "objection-2": "npm:objection@2",
     "objection-visibility": "^0.4.0",
