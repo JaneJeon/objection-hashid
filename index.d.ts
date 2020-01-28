@@ -1,7 +1,7 @@
-declare module 'objection-hashid' {
-  import { Model } from 'objection-2';
-  import { QueryBuilder } from 'knex';
+import { Model } from 'objection-2';
+import { QueryBuilder } from 'knex';
 
+declare module 'objection-hashid' {
   class HashIdExtensionClass extends Model {
     static get hashIdSalt(): string;
 
@@ -24,5 +24,5 @@ declare module 'objection-hashid' {
     $formatJson(obj: object): object;
   }
 
-  export default function (model: new (...args: any[]) => Model): new (...args: any[]) => HashIdExtensionClass;
+  export default function (model: new (...args: any[]) => Model): new (...args: any[]) => ThisParameterType<HashIdExtensionClass>;
 }
