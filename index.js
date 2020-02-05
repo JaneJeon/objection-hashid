@@ -1,4 +1,4 @@
-const HashId = require('hashids')
+const HashId = require('hashids/cjs')
 const memoize = require('lodash.memoize')
 
 const memoizeHashId = memoize(
