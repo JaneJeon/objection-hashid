@@ -22,7 +22,7 @@ Sometimes you don't want to expose the id's of your model directly. Instead of `
 
 That's where [hashids](https://hashids.org) and this plugin comes in: it automatically converts the model id(s) (yes, it supports compound PKs) into an obfuscated form for the outside world to read, and then convert it back to the original form when the server's trying to read the model id.
 
-And all of this operation is _entirely_ symmetric, so you don't have to worry about the integrity of the ids and id references as you convert back and forth between your auto-generated id and the hashed version!
+And all of this operation is _entirely_ isomorphic, so you don't have to worry about the integrity of the ids and id references as you convert back and forth between your auto-generated id and the hashed version!
 
 ## Install
 
