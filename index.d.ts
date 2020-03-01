@@ -1,36 +1,33 @@
-import { Model, ModelClass, Page } from 'objection';
-import { QueryBuilder } from 'knex';
+import { Model, Page } from 'objection-2';
 
 declare module 'objection-hashid' {
-  class AuthQueryBuilder<M extends Model, R = M[]> extends Model.QueryBuilder<M, R> {
-    ArrayQueryBuilderType: AuthQueryBuilder<M, M[]>;
-    SingleQueryBuilderType: AuthQueryBuilder<M, M>;
-    NumberQueryBuilderType: AuthQueryBuilder<M, number>;
-    PageQueryBuilderType: AuthQueryBuilder<M, Page<M>>;
+  class HashIdQueryBuilder<M extends Model, R = M[]> {
+    ArrayQueryBuilderType: HashIdQueryBuilder<M, M[]>;
+    SingleQueryBuilderType: HashIdQueryBuilder<M, M>;
+    NumberQueryBuilderType: HashIdQueryBuilder<M, number>;
+    PageQueryBuilderType: HashIdQueryBuilder<M, Page<M>>;
+
+    findByHashId: (hashId: string) => this['SingleQueryBuilderType'] & M['QueryBuilderType']['SingleQueryBuilderType'];
   }
 
-  class HashIdModelClass extends Model {
-    QueryBuilderType: AuthQueryBuilder<this>;
-    QueryBuilder: AuthQueryBuilder<this>;
+  interface HashIdInstance<T extends typeof Model> {
+    QueryBuilderType: HashIdQueryBuilder<this & T['prototype']>;
 
-    static get hashIdSalt(): string;
-
-    static get hashIdMinLength(): number | void;
-
-    static get hashIdAlphabet(): string | void;
-
-    static get hashIdSeps(): string | void;
-
-    static get _hashIdInstance(): string;
-
-    get hashId(): string;
-
-    get hashid(): string;
-
-    static get hashIdField(): string;
-
-    static get hashedFields(): Array<any>;
+    hashid: string;
+    hashId: string;
   }
 
-  export default function hashid(model: new () => Model): ModelClass<HashIdModelClass>;
+  interface HashIdStatic<T extends typeof Model> {
+    QueryBuilder: typeof HashIdQueryBuilder;
+    hashIdSalt: string;
+    hashIdMinLength: number | void;
+    hashIdAlphabet: string | void;
+    hashIdSeps: string | void;
+    hashIdField: string | boolean;
+    hashedFields: Array<string>;
+
+    new(): HashIdInstance<T> & T['prototype'];
+  }
+
+  export default function hashid<T extends typeof Model>(model: T): HashIdStatic<T> & Omit<T, 'new'> & T['prototype'];
 }
