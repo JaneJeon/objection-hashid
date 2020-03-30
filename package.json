@@ -46,7 +46,7 @@
     "objection-1": "npm:objection@1",
     "objection-2": "npm:objection@2",
     "objection-visibility": "^1.0.0",
-    "prettier": "^1.18.2",
+    "prettier": "^2.0.2",
     "snazzy": "^8.0.0",
     "sqlite3": "^4.1.0",
     "standard": "^14.1.0"
