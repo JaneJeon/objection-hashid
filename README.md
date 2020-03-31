@@ -36,8 +36,8 @@ npm install objection-hashid --save
 ## Usage
 
 ```js
-const { Model } = require("objection");
-const hashid = require("objection-hashid");
+const { Model } = require('objection')
+const hashid = require('objection-hashid')
 
 class Post extends hashid(Model) {
   // that's it! This is just a regular objection.js model class
@@ -47,10 +47,10 @@ class Post extends hashid(Model) {
 Then you can take your resource model and...
 
 ```js
-const post = await Post.query().findById(42);
-console.log(post.id); // 42
-console.log(post.hashId); // some string "XYZ"
-console.log(JSON.stringify(post)); // {id: "XYZ", ...}
+const post = await Post.query().findById(42)
+console.log(post.id) // 42
+console.log(post.hashId) // some string "XYZ"
+console.log(JSON.stringify(post)) // {id: "XYZ", ...}
 ```
 
 Note that the hashed form of your model id is readable while it's an object (i.e. you haven't serialized it yet by sending it thru `res.send()`, for example) via the `hashId` property.
@@ -60,41 +60,41 @@ When serialized, the `hashId` property won't be written so that your resulting o
 Now when you receive an object that has an encoded hashid, you can "decode" it and find the model using the `findByHashId` query:
 
 ```js
-console.log(obj.id); // "XYZ"
+console.log(obj.id) // "XYZ"
 
-const post = await Post.query().findByHashId(obj.id);
-console.log(post.id); // 42
-console.log(post.hashId); // "XYZ"
+const post = await Post.query().findByHashId(obj.id)
+console.log(post.id) // 42
+console.log(post.hashId) // "XYZ"
 ```
 
 Additionally, this plugin automatically detects and adjusts for composite primary keys, so you don't have to do anything; the hashid will show up the same:
 
 ```js
 class SomeModel extends hashid(Model) {
-  static get idColumn() {
-    return ["id1", "id2"];
+  static get idColumn () {
+    return ['id1', 'id2']
   }
 }
 
-const model = await SomeModel.query().findById([1, 2]);
-console.log(model.$id()); // [1, 2]
-console.log(model.hashId); // "XYZ"
-console.log(JSON.stringify(model)); // {id1: 1, id2: 2, id: "XYZ"}
+const model = await SomeModel.query().findById([1, 2])
+console.log(model.$id()) // [1, 2]
+console.log(model.hashId) // "XYZ"
+console.log(JSON.stringify(model)) // {id1: 1, id2: 2, id: "XYZ"}
 
-const obj = await SomeModel.query().findByHashId(model.hashId);
-assert(obj.$id() == model.$id());
+const obj = await SomeModel.query().findByHashId(model.hashId)
+assert(obj.$id() == model.$id())
 ```
 
 You can even use this plugin with `objection-visibility`:
 
 ```js
-const { Model } = require("objection");
-const visibility = require("objection-visibility").default;
-const hashid = require("objection-hashid");
+const { Model } = require('objection')
+const visibility = require('objection-visibility').default
+const hashid = require('objection-hashid')
 
 class BaseModel extends hashid(visibility(Model)) {
-  static get hidden() {
-    return ["foo", "bar"];
+  static get hidden () {
+    return ['foo', 'bar']
   }
 }
 ```
@@ -110,8 +110,8 @@ In fact, you can hash any arbitrary non-id field in the model as follows:
 
 ```js
 class Post extends hashid(Model) {
-  static get hashedFields() {
-    return ["creatorId"]; // specify any non-PK fields
+  static get hashedFields () {
+    return ['creatorId'] // specify any non-PK fields
   }
 }
 ```
@@ -126,8 +126,8 @@ Each of those properties, for each model, can be overwritten by setting them as 
 
 ```js
 class BaseModel extends hashid(Model) {
-  static get hashIdMinLength() {
-    return 5;
+  static get hashIdMinLength () {
+    return 5
   }
 }
 ```

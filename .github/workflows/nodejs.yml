@@ -1,4 +1,4 @@
-name: Build
+name: build
 on:
   push:
     branches:
@@ -13,7 +13,7 @@ jobs:
 
     strategy:
       matrix:
-        node-version: ["10", "12"]
+        node-version: ['10', '12']
 
     steps:
       - uses: actions/checkout@v2
@@ -26,21 +26,21 @@ jobs:
         id: cache
         uses: actions/cache@v1
         with:
-          path: node_modules
-          key: ${{ runner.os }}-node-${{ matrix.node-version }}-${{ hashFiles('**/yarn.lock') }}
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ matrix.node-version }}-${{ hashFiles('**/package-lock.json') }}
           restore-keys: ${{ runner.os }}-node-${{ matrix.node-version }}-
       - name: Install Dependencies
-        run: yarn --frozen-lockfile
-        if: steps.cache.outputs.cache-hit != 'true'
+        run: npm ci
 
       - name: Lint
-        run: yarn lint
+        run: npm run lint
+        if: matrix.node-version != '12'
 
       - name: Test
-        run: yarn test:ci
+        run: npm test -- --ci --runInBand --forceExit
         if: matrix.node-version != '12'
       - name: Test With Coverage
-        run: yarn test:ci --coverage
+        run: npm test -- --coverage --ci --runInBand --reporters=default --reporters=jest-junit --forceExit
         if: matrix.node-version == '12'
 
       - name: Archive Test Results
@@ -49,9 +49,10 @@ jobs:
         with:
           name: Test Report
           path: junit.xml
+        if: matrix.node-version == '12'
 
       - name: Upload Coverage
         uses: codecov/codecov-action@v1
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
-        if: matrix.node-version == '12' && github.ref == 'refs/heads/master'
+        if: github.ref == 'refs/heads/master' && matrix.node-version == '12'

@@ -6,9 +6,9 @@ const knex = knexjs({
   client: 'sqlite3',
   connection: { filename: ':memory:' },
   useNullAsDefault: true
-});
+})
 
-[1, 2].forEach(version => {
+;[1, 2].forEach(version => {
   const { Model } = require(`objection-${version}`)
   Model.knex(knex)
 

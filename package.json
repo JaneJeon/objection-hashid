@@ -8,29 +8,8 @@
   "license": "MIT",
   "scripts": {
     "test": "jest",
-    "test:watch": "yarn test --watch",
-    "test:ci": "yarn test --ci --reporters=default --reporters=jest-junit",
-    "lint": "standard | snazzy && prettier --check '**/*.{md,json,yml,yaml}'"
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "lint-staged",
-      "pre-push": "yarn test"
-    }
-  },
-  "lint-staged": {
-    "*.js": [
-      "prettier --write",
-      "standard --fix"
-    ],
-    "*.{md,json,yml,yaml}": [
-      "prettier --write"
-    ]
-  },
-  "standard": {
-    "env": [
-      "jest"
-    ]
+    "test:watch": "npm test -- --watch",
+    "lint": "prettier-standard --check --lint"
   },
   "dependencies": {
     "hashids": "^2.2.1",
@@ -46,10 +25,8 @@
     "objection-1": "npm:objection@1",
     "objection-2": "npm:objection@2",
     "objection-visibility": "^1.0.0",
-    "prettier": "^1.18.2",
-    "snazzy": "^8.0.0",
-    "sqlite3": "^4.1.0",
-    "standard": "^14.1.0"
+    "prettier-standard": "^16.2.1",
+    "sqlite3": "^4.1.0"
   },
   "peerDependencies": {
     "objection": "^1 || ^2"
