@@ -26,7 +26,7 @@
     "objection-2": "npm:objection@2",
     "objection-visibility": "^1.0.0",
     "prettier-standard": "^16.2.1",
-    "sqlite3": "^4.1.0"
+    "sqlite3": "^5.0.0"
   },
   "peerDependencies": {
     "objection": "^1 || ^2"
