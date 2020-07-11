@@ -9,23 +9,41 @@
   "scripts": {
     "test": "jest",
     "test:watch": "npm test -- --watch",
-    "lint": "prettier-standard --check --lint"
+    "lint": "run-s lint:*",
+    "lint:prettier": "prettier --check .",
+    "lint:eslint": "eslint ."
+  },
+  "prettier": "@janejeon/prettier-config",
+  "eslintConfig": {
+    "extends": "@janejeon"
   },
   "dependencies": {
     "hashids": "^2.2.1",
     "lodash.memoize": "^4.1.2"
   },
   "devDependencies": {
+    "@janejeon/eslint-config": "^1.0.1",
+    "@janejeon/prettier-config": "^1.0.4",
     "@types/jest": "^26.0.0",
+    "eslint": "^7.4.0",
+    "eslint-config-prettier": "^6.11.0",
+    "eslint-config-standard": "^14.1.1",
+    "eslint-plugin-import": "^2.22.0",
+    "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-prettier": "^3.1.4",
+    "eslint-plugin-promise": "^4.2.1",
+    "eslint-plugin-standard": "^4.0.1",
     "husky": "^4.2.1",
     "jest": "^26.0.1",
     "jest-junit": "^11.0.1",
     "knex": "^0.21.0",
     "lint-staged": "^10.0.2",
+    "npm-run-all": "^4.1.5",
     "objection-1": "npm:objection@1",
     "objection-2": "npm:objection@2",
     "objection-visibility": "^1.0.0",
-    "prettier-standard": "^16.2.1",
+    "prettier": "^2.0.5",
+    "skip-ci": "^1.0.3",
     "sqlite3": "^5.0.0"
   },
   "peerDependencies": {

@@ -13,55 +13,55 @@ const knex = knexjs({
   Model.knex(knex)
 
   class BaseModel extends plugin(visibility(Model)) {
-    static get tableName () {
+    static get tableName() {
       return `table1-${version}`
     }
   }
 
   class HiddenId extends BaseModel {
-    static get hidden () {
+    static get hidden() {
       return ['id']
     }
 
-    static get hashIdField () {
+    static get hashIdField() {
       return false
     }
   }
 
   class AlgoliaObject extends BaseModel {
-    static get hashIdField () {
+    static get hashIdField() {
       return 'ObjectID'
     }
   }
 
   class FatModel extends BaseModel {
-    static get hashedFields () {
+    static get hashedFields() {
       return ['foo', 'bar']
     }
   }
 
   class CompoundPK extends BaseModel {
-    static get tableName () {
+    static get tableName() {
       return `table2-${version}`
     }
 
-    static get idColumn () {
+    static get idColumn() {
       return ['x', 'y']
     }
   }
 
   class SubModel extends BaseModel {
-    static get hashIdSalt () {
+    static get hashIdSalt() {
       return 'static'
     }
 
-    static get hashIdMinLength () {
+    static get hashIdMinLength() {
       return 6
     }
   }
 
   class ModelA extends SubModel {
-    static get relationMappings () {
+    static get relationMappings() {
       return {
         modelBs: {
           relation: BaseModel.HasManyRelation,
@@ -76,11 +76,11 @@ const knex = knexjs({
   }
 
   class ModelB extends SubModel {
-    static get tableName () {
+    static get tableName() {
       return `table3-${version}`
     }
 
-    static get hashedFields () {
+    static get hashedFields() {
       return ['fk_id']
     }
   }

@@ -1,6 +1,6 @@
 <h1 align="center">Welcome to objection-hashid 👋</h1>
 
-[![GitHub Actions](https://github.com/JaneJeon/objection-hashid/workflows/build/badge.svg)](https://github.com/JaneJeon/objection-hashid/actions)
+[![CircleCI](https://circleci.com/gh/JaneJeon/objection-hashid.svg?style=shield)](https://circleci.com/gh/JaneJeon/objection-hashid)
 [![codecov](https://codecov.io/gh/JaneJeon/objection-hashid/branch/master/graph/badge.svg)](https://codecov.io/gh/JaneJeon/objection-hashid)
 [![Version](https://img.shields.io/npm/v/objection-hashid)](https://www.npmjs.com/package/objection-hashid)
 [![Downloads](https://img.shields.io/npm/dt/objection-hashid)](https://www.npmjs.com/package/objection-hashid)
@@ -71,7 +71,7 @@ Additionally, this plugin automatically detects and adjusts for composite primar
 
 ```js
 class SomeModel extends hashid(Model) {
-  static get idColumn () {
+  static get idColumn() {
     return ['id1', 'id2']
   }
 }
@@ -93,7 +93,7 @@ const visibility = require('objection-visibility').default
 const hashid = require('objection-hashid')
 
 class BaseModel extends hashid(visibility(Model)) {
-  static get hidden () {
+  static get hidden() {
     return ['foo', 'bar']
   }
 }
@@ -110,7 +110,7 @@ In fact, you can hash any arbitrary non-id field in the model as follows:
 
 ```js
 class Post extends hashid(Model) {
-  static get hashedFields () {
+  static get hashedFields() {
     return ['creatorId'] // specify any non-PK fields
   }
 }
@@ -126,7 +126,7 @@ Each of those properties, for each model, can be overwritten by setting them as 
 
 ```js
 class BaseModel extends hashid(Model) {
-  static get hashIdMinLength () {
+  static get hashIdMinLength() {
     return 5
   }
 }
