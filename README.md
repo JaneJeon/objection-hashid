@@ -8,7 +8,6 @@
 [![Dependencies](https://img.shields.io/david/JaneJeon/objection-hashid)](https://david-dm.org/JaneJeon/objection-hashid)
 [![Vulnerabilities](https://snyk.io//test/github/JaneJeon/objection-hashid/badge.svg?targetFile=package.json)](https://snyk.io//test/github/JaneJeon/objection-hashid?targetFile=package.json)
 [![Dependabot](https://api.dependabot.com/badges/status?host=github&repo=JaneJeon/objection-hashid)](https://dependabot.com)
-[![License](https://img.shields.io/npm/l/objection-hashid)](https://github.com/JaneJeon/objection-hashid/blob/master/LICENSE)
 [![Docs](https://img.shields.io/badge/docs-github-blue)](https://janejeon.github.io/objection-hashid)
 [![Standard](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://standardjs.com)
 
@@ -170,5 +169,5 @@ Give a ⭐️ if this project helped you!
 
 ## 📝 License
 
-Copyright © 2019 [Jane Jeon](https://github.com/JaneJeon).  
-This project is [MIT](https://github.com/JaneJeon/objection-hashid/blob/master/LICENSE) licensed.
+Copyright © 2021 [Jane Jeon](https://github.com/JaneJeon).  
+This project is [LGPL](https://github.com/JaneJeon/objection-hashid/blob/master/LICENSE) licensed (TL;DR: please contribute back any improvements to this library).
