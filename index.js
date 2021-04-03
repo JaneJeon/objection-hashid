@@ -2,6 +2,7 @@ const HashId = require('hashids/cjs')
 const memoize = require('lodash/memoize')
 const get = require('lodash/get')
 const set = require('lodash/set')
+const deepCopy = require('lodash/cloneDeep')
 
 const memoizeHashId = memoize(
   (salt, minLength, alphabet, seps) =>
@@ -51,8 +52,8 @@ module.exports = Model => {
       return []
     }
 
-    $formatJson(obj) {
-      obj = super.$formatJson(obj)
+    $formatJson(originalObj) {
+      const obj = deepCopy(super.$formatJson(originalObj))
 
       // inject the hashed PK into the resulting JSON - a reminder
       // that hashId/hashid fields are virtual and do not get written to JSON.
@@ -69,8 +70,8 @@ module.exports = Model => {
       return obj
     }
 
-    $parseJson(json, opt) {
-      json = super.$parseJson(json, opt)
+    $parseJson(originalJSON, opt) {
+      const json = deepCopy(super.$parseJson(originalJSON, opt))
 
       // decode any `hashedFields`, which are guaranteed to be single column
       this.constructor.hashedFields.forEach(field => {
