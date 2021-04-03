@@ -8,168 +8,163 @@ const knex = knexjs({
   useNullAsDefault: true
 })
 
-;[1, 2].forEach(version => {
-  const { Model } = require(`objection-${version}`)
-  Model.knex(knex)
+const { Model } = require('objection')
+Model.knex(knex)
 
-  class BaseModel extends plugin(visibility(Model)) {
-    static get tableName() {
-      return `table1-${version}`
-    }
+class BaseModel extends plugin(visibility(Model)) {
+  static get tableName() {
+    return 'table1'
+  }
+}
+
+class HiddenId extends BaseModel {
+  static get hidden() {
+    return ['id']
   }
 
-  class HiddenId extends BaseModel {
-    static get hidden() {
-      return ['id']
-    }
+  static get hashIdField() {
+    return false
+  }
+}
 
-    static get hashIdField() {
-      return false
-    }
+class AlgoliaObject extends BaseModel {
+  static get hashIdField() {
+    return 'ObjectID'
+  }
+}
+
+class FatModel extends BaseModel {
+  static get hashedFields() {
+    return ['foo', 'bar']
+  }
+}
+
+class CompoundPK extends BaseModel {
+  static get tableName() {
+    return 'table2'
   }
 
-  class AlgoliaObject extends BaseModel {
-    static get hashIdField() {
-      return 'ObjectID'
-    }
+  static get idColumn() {
+    return ['x', 'y']
+  }
+}
+
+class SubModel extends BaseModel {
+  static get hashIdSalt() {
+    return 'static'
   }
 
-  class FatModel extends BaseModel {
-    static get hashedFields() {
-      return ['foo', 'bar']
-    }
+  static get hashIdMinLength() {
+    return 6
   }
+}
 
-  class CompoundPK extends BaseModel {
-    static get tableName() {
-      return `table2-${version}`
-    }
-
-    static get idColumn() {
-      return ['x', 'y']
-    }
-  }
-
-  class SubModel extends BaseModel {
-    static get hashIdSalt() {
-      return 'static'
-    }
-
-    static get hashIdMinLength() {
-      return 6
-    }
-  }
-
-  class ModelA extends SubModel {
-    static get relationMappings() {
-      return {
-        modelBs: {
-          relation: BaseModel.HasManyRelation,
-          modelClass: ModelB,
-          join: {
-            from: `${this.tableName}.id`,
-            to: `${ModelB.tableName}.fk_id`
-          }
+class ModelA extends SubModel {
+  static get relationMappings() {
+    return {
+      modelBs: {
+        relation: BaseModel.HasManyRelation,
+        modelClass: ModelB,
+        join: {
+          from: `${this.tableName}.id`,
+          to: `${ModelB.tableName}.fk_id`
         }
       }
     }
   }
+}
 
-  class ModelB extends SubModel {
-    static get tableName() {
-      return `table3-${version}`
-    }
-
-    static get hashedFields() {
-      return ['fk_id']
-    }
+class ModelB extends SubModel {
+  static get tableName() {
+    return 'table3'
   }
 
-  describe(`objection-hashid (w/ objection v${version})`, () => {
-    beforeAll(async () => {
-      await knex.schema.createTable(BaseModel.tableName, table => {
-        table.increments()
-        table.integer('foo')
-      })
+  static get hashedFields() {
+    return ['fk_id']
+  }
+}
 
-      await knex.schema.createTable(CompoundPK.tableName, table => {
-        table.integer('x').notNullable()
-        table.integer('y').notNullable()
-        table.primary(['x', 'y'])
-      })
-
-      await knex.schema.createTable(ModelB.tableName, table => {
-        table.increments()
-        table
-          .integer('fk_id')
-          .references(`${ModelA.tableName}.id`)
-          .notNullable()
-      })
+describe('objection-hashid', () => {
+  beforeAll(async () => {
+    await knex.schema.createTable(BaseModel.tableName, table => {
+      table.increments()
+      table.integer('foo')
     })
 
-    test('fills out hashId', async () => {
-      const model = await BaseModel.query().insert({})
-
-      expect(typeof model.id).toBe('number')
-      expect(typeof model.hashId).toBe('string')
-      expect(model.hashId.length).toBeGreaterThan(0) // hashid returns blank string on error
+    await knex.schema.createTable(CompoundPK.tableName, table => {
+      table.integer('x').notNullable()
+      table.integer('y').notNullable()
+      table.primary(['x', 'y'])
     })
 
-    test('aliases hashid', async () => {
-      const model = await BaseModel.query().first()
-
-      expect(model.hashid).toBeDefined()
+    await knex.schema.createTable(ModelB.tableName, table => {
+      table.increments()
+      table.integer('fk_id').references(`${ModelA.tableName}.id`).notNullable()
     })
+  })
 
-    test('writes hashid to resulting object', async () => {
-      const model = await BaseModel.query().first()
+  test('fills out hashId', async () => {
+    const model = await BaseModel.query().insert({})
 
-      expect(typeof model.toJSON().id).toEqual('string')
-    })
+    expect(typeof model.id).toBe('number')
+    expect(typeof model.hashId).toBe('string')
+    expect(model.hashId.length).toBeGreaterThan(0) // hashid returns blank string on error
+  })
 
-    test('can change what field the hashed PK is written under', async () => {
-      const model = await AlgoliaObject.query().first()
+  test('aliases hashid', async () => {
+    const model = await BaseModel.query().first()
 
-      expect(typeof model.toJSON().ObjectID).toBe('string')
-    })
+    expect(model.hashid).toBeDefined()
+  })
 
-    test('can hash other fields as well', async () => {
-      const model = await FatModel.query().insertAndFetch({ foo: 4 })
+  test('writes hashid to resulting object', async () => {
+    const model = await BaseModel.query().first()
 
-      expect(typeof model.toJSON().foo).toBe('string')
-    })
+    expect(typeof model.toJSON().id).toEqual('string')
+  })
 
-    let obj, hashId
+  test('can change what field the hashed PK is written under', async () => {
+    const model = await AlgoliaObject.query().first()
 
-    test('works with objection-visibility', async () => {
-      const model = await HiddenId.query().insertAndFetch({})
-      obj = model.toJSON()
-      hashId = model.hashId
+    expect(typeof model.toJSON().ObjectID).toBe('string')
+  })
 
-      expect(obj.id).toBeUndefined()
-      expect(typeof obj.hashId).toBe('undefined')
-    })
+  test('can hash other fields as well', async () => {
+    const model = await FatModel.query().insertAndFetch({ foo: 4 })
 
-    test('search by hashId', async () => {
-      const model = await HiddenId.query().findByHashId(hashId)
+    expect(typeof model.toJSON().foo).toBe('string')
+  })
 
-      expect(model).toBeTruthy()
-    })
+  let obj, hashId
 
-    test('works with compound primary keys', async () => {
-      const model = await CompoundPK.query().insertAndFetch({ x: 6, y: 9 })
-      const hashId = model.toJSON().id
-      expect(typeof hashId).toBe('string')
+  test('works with objection-visibility', async () => {
+    const model = await HiddenId.query().insertAndFetch({})
+    obj = model.toJSON()
+    hashId = model.hashId
 
-      const instance = await CompoundPK.query().findByHashId(hashId)
-      expect(instance.$id()).toEqual([6, 9])
-    })
+    expect(obj.id).toBeUndefined()
+    expect(typeof obj.hashId).toBe('undefined')
+  })
 
-    test('maintains reference across multiple models', async () => {
-      const modelA = await ModelA.query().insertAndFetch({})
-      const modelB = await modelA.$relatedQuery('modelBs').insert({})
+  test('search by hashId', async () => {
+    const model = await HiddenId.query().findByHashId(hashId)
 
-      expect(modelA.toJSON().id).toEqual(modelB.toJSON().fk_id)
-    })
+    expect(model).toBeTruthy()
+  })
+
+  test('works with compound primary keys', async () => {
+    const model = await CompoundPK.query().insertAndFetch({ x: 6, y: 9 })
+    const hashId = model.toJSON().id
+    expect(typeof hashId).toBe('string')
+
+    const instance = await CompoundPK.query().findByHashId(hashId)
+    expect(instance.$id()).toEqual([6, 9])
+  })
+
+  test('maintains reference across multiple models', async () => {
+    const modelA = await ModelA.query().insertAndFetch({})
+    const modelB = await modelA.$relatedQuery('modelBs').insert({})
+
+    expect(modelA.toJSON().id).toEqual(modelB.toJSON().fk_id)
   })
 })
