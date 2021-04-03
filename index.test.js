@@ -89,6 +89,7 @@ describe('objection-hashid', () => {
     await knex.schema.createTable(BaseModel.tableName, table => {
       table.increments()
       table.integer('foo')
+      table.integer('bar')
     })
 
     await knex.schema.createTable(CompoundPK.tableName, table => {
@@ -104,7 +105,7 @@ describe('objection-hashid', () => {
   })
 
   test('fills out hashId', async () => {
-    const model = await BaseModel.query().insert({})
+    const model = await BaseModel.query().insertAndFetch({})
 
     expect(typeof model.id).toBe('number')
     expect(typeof model.hashId).toBe('string')
@@ -130,7 +131,7 @@ describe('objection-hashid', () => {
   })
 
   test('can hash other fields as well', async () => {
-    const model = await FatModel.query().insertAndFetch({ foo: 4 })
+    const model = await FatModel.query().insertAndFetch({ foo: 4, bar: 5 })
 
     expect(typeof model.toJSON().foo).toBe('string')
   })
@@ -166,5 +167,12 @@ describe('objection-hashid', () => {
     const modelB = await modelA.$relatedQuery('modelBs').insert({})
 
     expect(modelA.toJSON().id).toEqual(modelB.toJSON().fk_id)
+  })
+
+  test('decodes back to original id(s)', async () => {
+    const model = await BaseModel.query().first()
+    const model2 = BaseModel.fromJson(model.toJSON())
+
+    expect(model.id).toEqual(model2.id)
   })
 })

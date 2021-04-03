@@ -1,5 +1,7 @@
 const HashId = require('hashids/cjs')
-const memoize = require('lodash.memoize')
+const memoize = require('lodash/memoize')
+const get = require('lodash/get')
+const set = require('lodash/set')
 
 const memoizeHashId = memoize(
   (salt, minLength, alphabet, seps) =>
@@ -55,15 +57,42 @@ module.exports = Model => {
       // inject the hashed PK into the resulting JSON - a reminder
       // that hashId/hashid fields are virtual and do not get written to JSON.
       if (this.constructor.hashIdField) {
-        obj[this.constructor.hashIdField] = this.hashId
+        set(obj, this.constructor.hashIdField, this.hashId)
       }
 
       // hash the rest of the fields
       this.constructor.hashedFields.forEach(field => {
-        obj[field] = this.constructor._hashIdInstance.encode(obj[field])
+        const encoded = this.constructor._hashIdInstance.encode(get(obj, field))
+        set(obj, field, encoded)
       })
 
       return obj
+    }
+
+    $parseJson(json, opt) {
+      json = super.$parseJson(json, opt)
+
+      // decode any `hashedFields`, which are guaranteed to be single column
+      this.constructor.hashedFields.forEach(field => {
+        const hashId = get(json, field)
+        const decoded = this.constructor._hashIdInstance.decode(hashId)
+        set(json, field, decoded)
+      })
+
+      // decoding the id is a bit trickier as it can be a compound PK.
+      // The only reason this works is because hashid can decode back into
+      // the original array form, allowing us to map each entry in the array
+      // to each column in the id
+      const hashId = get(json, this.constructor.hashIdField)
+      const decodedId = this.constructor._hashIdInstance.decode(hashId)
+
+      if (Array.isArray(this.constructor.idColumn)) {
+        for (let i = 0; i < decodedId.length; i++) {
+          set(json, this.constructor.idColumn[i], decodedId[i])
+        }
+      } else set(json, this.constructor.idColumn, decodedId[0])
+
+      return json
     }
 
     static get QueryBuilder() {
