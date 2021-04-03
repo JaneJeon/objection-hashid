@@ -1,6 +1,6 @@
 {
   "name": "objection-hashid",
-  "version": "1.4.2",
+  "version": "2.0.0",
   "description": "Objection plugin to automatically obfuscate model ids using hashids!",
   "main": "index.js",
   "repository": "JaneJeon/objection-hashid",
