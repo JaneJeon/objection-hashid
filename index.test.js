@@ -173,6 +173,6 @@ describe('objection-hashid', () => {
     const model = await BaseModel.query().first()
     const model2 = BaseModel.fromJson(model.toJSON())
 
-    expect(model.id).toEqual(model2.id)
+    expect(model.id).toStrictEqual(model2.id)
   })
 })
