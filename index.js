@@ -77,7 +77,7 @@ module.exports = Model => {
       this.constructor.hashedFields.forEach(field => {
         const hashId = get(json, field)
         const decoded = this.constructor._hashIdInstance.decode(hashId)
-        set(json, field, decoded)
+        set(json, field, decoded[0])
       })
 
       // decoding the id is a bit trickier as it can be a compound PK.
