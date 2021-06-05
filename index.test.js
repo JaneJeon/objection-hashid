@@ -130,10 +130,13 @@ describe('objection-hashid', () => {
     expect(typeof model.toJSON().ObjectID).toBe('string')
   })
 
-  test('can hash other fields as well', async () => {
-    const model = await FatModel.query().insertAndFetch({ foo: 4, bar: 5 })
+  test('can hash other fields as well', () => {
+    const model = FatModel.fromJson()
+    model.foo = 4
+    model.bar = 5
 
     expect(typeof model.toJSON().foo).toBe('string')
+    expect(model.toJSON().bar).not.toEqual('')
   })
 
   let obj, hashId
@@ -174,5 +177,15 @@ describe('objection-hashid', () => {
     const model2 = BaseModel.fromJson(model.toJSON())
 
     expect(model.id).toStrictEqual(model2.id)
+  })
+
+  test('decodes hashedFields correctly', () => {
+    // set the fields manually since if we were to do FatModel.query().insert...,
+    // the plugin would expect us to pass hashed values of `foo` and `bar`.
+    const model = FatModel.fromJson({})
+    model.foo = 4
+    model.bar = 5
+
+    expect(FatModel.fromJson(model.toJSON()).foo).toEqual(4)
   })
 })
