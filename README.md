@@ -15,6 +15,8 @@
 
 ### 🏠 [Homepage](https://github.com/JaneJeon/objection-hashid)
 
+> Enjoy objection-hashid? Check out my other objection plugins: [objection-authorize](https://github.com/JaneJeon/objection-authorize) and [objection-tablename](https://github.com/JaneJeon/objection-table-name)!
+
 ## Why?
 
 Sometimes you don't want to expose the id's of your model directly. Instead of `{id: 1}`, you can have `{id: 'W02nmXZ'}` like YouTube's video id or bitly's link id.
