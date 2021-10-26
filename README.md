@@ -1,13 +1,8 @@
 <h1 align="center">Welcome to objection-hashid 👋</h1>
 
-[![CircleCI](https://circleci.com/gh/JaneJeon/objection-hashid.svg?style=shield)](https://circleci.com/gh/JaneJeon/objection-hashid)
-[![codecov](https://codecov.io/gh/JaneJeon/objection-hashid/branch/master/graph/badge.svg)](https://codecov.io/gh/JaneJeon/objection-hashid)
+[![CI](https://github.com/JaneJeon/objection-hashid/actions/workflows/ci.yml/badge.svg)](https://github.com/JaneJeon/objection-hashid/actions/workflows/ci.yml)
 [![Version](https://img.shields.io/npm/v/objection-hashid)](https://www.npmjs.com/package/objection-hashid)
 [![Downloads](https://img.shields.io/npm/dt/objection-hashid)](https://www.npmjs.com/package/objection-hashid)
-[![install size](https://packagephobia.now.sh/badge?p=objection-hashid)](https://packagephobia.now.sh/result?p=objection-hashid)
-[![Dependencies](https://img.shields.io/david/JaneJeon/objection-hashid)](https://david-dm.org/JaneJeon/objection-hashid)
-[![Vulnerabilities](https://snyk.io//test/github/JaneJeon/objection-hashid/badge.svg?targetFile=package.json)](https://snyk.io//test/github/JaneJeon/objection-hashid?targetFile=package.json)
-[![Dependabot](https://api.dependabot.com/badges/status?host=github&repo=JaneJeon/objection-hashid)](https://dependabot.com)
 [![Docs](https://img.shields.io/badge/docs-github-blue)](https://janejeon.github.io/objection-hashid)
 [![Standard](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://standardjs.com)
 
