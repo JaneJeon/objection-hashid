@@ -1,0 +1,58 @@
+version: 2.1
+
+aliases:
+  - &runner
+    executor:
+      name: node/default
+      tag: lts
+  - &size
+    resource_class: small
+
+orbs:
+  node: circleci/node@4
+  slack: circleci/slack@4
+  codecov: codecov/codecov@3
+
+jobs:
+  lint:
+    <<: *runner
+    <<: *size
+    steps:
+      - checkout
+      - node/install-packages
+      - run: npm run lint:prettier
+      - run: npm run lint:eslint -- --format junit --output-file reports/eslint/results.xml
+  test:
+    <<: *runner
+    <<: *size
+    parameters:
+      node-version:
+        type: string
+    steps:
+      - checkout
+      - node/install-packages
+      - run: npm test -- --ci --coverage # reports automatically generated
+
+workflows:
+  build:
+    jobs:
+      - lint:
+          post-steps:
+            - &retrieve-junit
+              store_test_results:
+                path: reports
+      - test:
+          context: shared-vars
+          requires:
+            - lint
+          matrix:
+            parameters:
+              node-version:
+                - lts
+                - current
+          post-steps:
+            - *retrieve-junit
+            - codecov/upload # don't need token for public repos
+            - slack/notify:
+                event: fail
+                template: basic_fail_1
