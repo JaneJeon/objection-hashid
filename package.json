@@ -36,7 +36,7 @@
     "objection": "^3.0.0",
     "objection-visibility": "^1.0.0",
     "skip-ci": "^1.0.3",
-    "sqlite3": "^4.2.0"
+    "sqlite3": "^5.0.2"
   },
   "keywords": [
     "objection",
