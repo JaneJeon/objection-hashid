@@ -189,3 +189,7 @@ describe('objection-hashid', () => {
     expect(FatModel.fromJson(model.toJSON()).foo).toEqual(4)
   })
 })
+
+afterAll(async () => {
+  await knex.destroy()
+})
