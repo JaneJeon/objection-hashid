@@ -27,8 +27,6 @@ yarn add objection-hashid # or
 npm install objection-hashid --save
 ```
 
-**NOTE**: this plugin works with and is tested against _both_ objection v1 and v2!
-
 ## Usage
 
 ```js
