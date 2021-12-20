@@ -1,12 +1,6 @@
 const plugin = require('.')
 const visibility = require('objection-visibility').default
-const knexjs = require('knex')
-
-const knex = knexjs({
-  client: 'sqlite3',
-  connection: { filename: ':memory:' },
-  useNullAsDefault: true
-})
+const knex = require('./__utils__/knex')
 
 const { Model } = require('objection')
 Model.knex(knex)
@@ -188,8 +182,4 @@ describe('objection-hashid', () => {
 
     expect(FatModel.fromJson(model.toJSON()).foo).toEqual(4)
   })
-})
-
-afterAll(async () => {
-  await knex.destroy()
 })
