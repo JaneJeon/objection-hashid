@@ -4,9 +4,13 @@ aliases:
   - &runner
     executor:
       name: node/default
-      tag: lts
+      tag: << parameters.node-version >>
   - &size
     resource_class: small
+  - &params
+    parameters:
+      node-version:
+        type: string
 
 orbs:
   node: circleci/node@4
@@ -17,6 +21,7 @@ jobs:
   lint:
     <<: *runner
     <<: *size
+    <<: *params
     steps:
       - checkout
       - node/install-packages
@@ -25,9 +30,7 @@ jobs:
   test:
     <<: *runner
     <<: *size
-    parameters:
-      node-version:
-        type: string
+    <<: *params
     steps:
       - checkout
       - node/install-packages
@@ -37,6 +40,7 @@ workflows:
   build:
     jobs:
       - lint:
+          node-version: lts
           post-steps:
             - &retrieve-junit
               store_test_results:
