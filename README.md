@@ -167,4 +167,4 @@ Give a ⭐️ if this project helped you!
 Copyright © 2022 [Jane Jeon](https://github.com/JaneJeon).  
 This project is [LGPL](https://github.com/JaneJeon/objection-hashid/blob/master/LICENSE) licensed.
 
-TL;DR: you are free to import and use this library "as-is" in your code, without needing to make your code source-available and license it under the same license as this library; however, if you do change this library, please do contribute back any improvements for this library and this library alone.
+TL;DR: you are free to import and use this library "as-is" in your code, without needing to make your code source-available and license it under the same license as this library; however, if you do change this library and you distribute it, please do contribute back any improvements for this library and this library alone.
