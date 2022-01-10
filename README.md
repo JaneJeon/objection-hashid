@@ -164,5 +164,5 @@ Give a ⭐️ if this project helped you!
 
 ## 📝 License
 
-Copyright © 2021 [Jane Jeon](https://github.com/JaneJeon).  
+Copyright © 2022 [Jane Jeon](https://github.com/JaneJeon).  
 This project is [LGPL](https://github.com/JaneJeon/objection-hashid/blob/master/LICENSE) licensed (TL;DR: please contribute back any improvements to this library).
