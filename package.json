@@ -18,7 +18,6 @@
     "extends": "@janejeon"
   },
   "dependencies": {
-    "@vscode/sqlite3": "^5.0.7",
     "hashids": "^2.2.1",
     "lodash": "^4.17.21"
   },
@@ -28,6 +27,7 @@
   "devDependencies": {
     "@janejeon/eslint-config": "^2.2.0",
     "@janejeon/prettier-config": "^1.1.0",
+    "better-sqlite3": "^7.4.6",
     "husky": "^4.2.1",
     "jest": "^27.0.6",
     "jest-junit": "^13.0.0",
