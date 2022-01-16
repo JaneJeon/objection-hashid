@@ -18,6 +18,7 @@
     "extends": "@janejeon"
   },
   "dependencies": {
+    "@vscode/sqlite3": "^5.0.7",
     "hashids": "^2.2.1",
     "lodash": "^4.17.21"
   },
@@ -30,14 +31,13 @@
     "husky": "^4.2.1",
     "jest": "^27.0.6",
     "jest-junit": "^13.0.0",
-    "knex": "^0.95.14",
+    "knex": "^1.0.1",
     "lint-staged": "12.1.7",
     "node-notifier": "^10.0.0",
     "npm-run-all": "^4.1.5",
     "objection": "^3.0.0",
     "objection-visibility": "^1.0.0",
-    "skip-ci": "^1.0.3",
-    "sqlite3": "^5.0.2"
+    "skip-ci": "^1.0.3"
   },
   "keywords": [
     "objection",
