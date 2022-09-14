@@ -57,14 +57,16 @@ module.exports = Model => {
 
       // inject the hashed PK into the resulting JSON - a reminder
       // that hashId/hashid fields are virtual and do not get written to JSON.
-      if (this.constructor.hashIdField) {
+      if (this.constructor.hashIdField && obj.hasOwnProperty(this.constructor.hashIdField)) {
         set(obj, this.constructor.hashIdField, this.hashId)
       }
 
       // hash the rest of the fields
       this.constructor.hashedFields.forEach(field => {
-        const encoded = this.constructor._hashIdInstance.encode(get(obj, field))
-        set(obj, field, encoded)
+        if (obj.hasOwnProperty(field)) {
+          const encoded = this.constructor._hashIdInstance.encode(get(obj, field))
+          set(obj, field, encoded)
+        }
       })
 
       return obj
